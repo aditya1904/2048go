@@ -1,6 +1,6 @@
 ### 2048 in Go language
 ---
-Rules [here](https://en.wikipedia.org/wiki/2048_(video_game).
+Rules [here](https://en.wikipedia.org/wiki/2048_(video_game)).
 
 ##### Keys:  
 Play with 'w', 'a', 's', 'd'.  
