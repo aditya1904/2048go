@@ -5,9 +5,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 )
 
@@ -25,33 +25,36 @@ func main() {
 	board[row2][col2] = numbers[num2]
 	PrintBoard(board)
 
+	up := []byte{27, 91, 65}
+	down := []byte{27, 91, 66}
+	left := []byte{27, 91, 68}
+	right := []byte{27, 91, 67}
+
 	for {
-		char := GetInput()
+		b := GetInput()
 		switch {
-		case (char == 'w'):
+		case bytes.Equal(b, up):
 			fmt.Println("UP")
-			up(&board)
+			Up(&board)
 			fillablanktile(&board, r1, numbers)
 			PrintBoard(board)
-		case char == 's':
+		case bytes.Equal(b, down):
 			fmt.Println("DOWN")
-			down(&board)
+			Down(&board)
 			fillablanktile(&board, r1, numbers)
 			PrintBoard(board)
-		case char == 'a':
+		case bytes.Equal(b, left):
 			fmt.Println("LEFT")
-			left(&board)
+			Left(&board)
 			fillablanktile(&board, r1, numbers)
 			PrintBoard(board)
-		case char == 'd':
+		case bytes.Equal(b, right):
 			fmt.Println("RIGHT")
-			right(&board)
+			Right(&board)
 			fillablanktile(&board, r1, numbers)
 			PrintBoard(board)
-		case char == 'q':
-			os.Exit(0)
 		default:
-			fmt.Println("w for up, s for down, a for left, d for right, q to quit")
+			fmt.Println("Press only Arrow Keys")
 		}
 	}
 
@@ -69,16 +72,6 @@ func boardinitpositions(r1 *rand.Rand) (int, int, int, int) {
 func boardinitnumbers(r1 *rand.Rand) (int, int) {
 	return r1.Intn(2), r1.Intn(2)
 }
-
-// func PrintBoard(board [4][4]int) {
-// 	var i, j int
-// 	for i = 0; i < 4; i++ {
-// 		for j = 0; j < 4; j++ {
-// 			fmt.Print(" ", board[i][j], " ")
-// 		}
-// 		fmt.Println()
-// 	}
-// }
 
 func add(board *[4][4]int) {
 	var i, j int
@@ -127,29 +120,29 @@ func anticlockwiserotate(board *[4][4]int) {
 	clockwiserotate(board)
 }
 
-func left(board *[4][4]int) {
+func Left(board *[4][4]int) {
 	slide(board)
 	add(board)
 	slide(board)
 }
 
-func right(board *[4][4]int) {
+func Right(board *[4][4]int) {
 	clockwiserotate(board)
 	clockwiserotate(board)
-	left(board)
+	Left(board)
 	clockwiserotate(board)
 	clockwiserotate(board)
 }
 
-func down(board *[4][4]int) {
+func Down(board *[4][4]int) {
 	clockwiserotate(board)
-	left(board)
+	Left(board)
 	anticlockwiserotate(board)
 }
 
-func up(board *[4][4]int) {
+func Up(board *[4][4]int) {
 	anticlockwiserotate(board)
-	left(board)
+	Left(board)
 	clockwiserotate(board)
 }
 

@@ -5,18 +5,13 @@
 package main
 
 import (
-	"unicode"
-
-	"github.com/eiannone/keyboard"
+	"os"
+	"os/exec"
 )
 
-func GetInput() rune {
-	char, _, err := keyboard.GetSingleKey()
-	if err != nil {
-		panic(err)
-	}
-	dir := unicode.ToLower(char)
-	// fmt.Println(char, reflect.TypeOf(char))
-	return dir
-	// fmt.Printf("You pressed: %q\r\n", char)
+func GetInput() []byte {
+	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
+	var b []byte = make([]byte, 3)
+	os.Stdin.Read(b)
+	return b
 }
